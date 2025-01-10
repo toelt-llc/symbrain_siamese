@@ -1,4 +1,4 @@
-import argparse
+import argparse, os, time
 import numpy as np
 import wandb
 import torch
@@ -284,7 +284,9 @@ def main():
         best_fold = np.argmin(fold_results['val_loss'])
         best_overall_model = best_models[best_fold]
         if args.save:
-            torch.save(best_overall_model, model_path:=f"./models/kfoldtest_lil2/{model_name}_s5.pt")
+            model_path = f"./models/{model_name}_s5.pt"
+            os.makedirs(os.path.dirname(model_path), exist_ok=True)
+            torch.save(best_overall_model, model_path)
             print(f"Best model saved to {model_path}")
 
         print("\nFinal Evaluation:")
@@ -319,3 +321,9 @@ def main():
                 )
             })
             wandb.finish()
+
+if __name__ == '__main__':
+    start = time.time()
+    main()
+    end = time.time()
+    print(f"\n Time : {end-start:.3f}")

@@ -1,7 +1,4 @@
-data/
-
-*/*.pth
+**/*.pt
 **/__pycache__
-*.gz
 
 code/debug*
