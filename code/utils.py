@@ -410,18 +410,15 @@ def siamese_noise_dataset_fold_range(test_size=0.2, n_splits=5, noise_size=0, re
     slice1, slice2, labels, image_types = [], [], [], []
 
     # T1 and T2
-    if resize:
-        dst1 = hf_dataset['train'].map(transforms, batched=True)
-        dst2 = hf_dataset['test'].map(transforms, batched=True)
-    else:
-        dst1 = hf_dataset['train'].map(transforms_noresize, batched=True)
-        dst2 = hf_dataset['test'].map(transforms_noresize, batched=True)
+    transform_fn = transforms if resize else transforms_noresize
+    dst1 = hf_dataset['train'].map(transform_fn, batched=True)
+    dst2 = hf_dataset['test'].map(transform_fn, batched=True)
 
     # iterators for T1 and T2 data, used below
     t1_iter = enumerate(zip(dst1['slice1'], dst1['slice2']))
     t2_iter = enumerate(zip(dst2['slice1'], dst2['slice2']))
 
-    # Alternate between T1 and T2 using itertools
+    # First part : loop the dataset to add noise and labels
     for (i1, (t1_slice1, t1_slice2)), (i2, (t2_slice1, t2_slice2)) in itertools.zip_longest(t1_iter, t2_iter, fillvalue=(None, (None, None))):
         # T1 data
         if t1 and i1 is not None:
@@ -466,14 +463,12 @@ def siamese_noise_dataset_fold_range(test_size=0.2, n_splits=5, noise_size=0, re
     print(f"Number of T1 images: {sum(1 for t in image_types if t == 0)}")
     print(f"Number of T2 images: {sum(1 for t in image_types if t == 1)}")
 
-    # splits with val, stratified
+    # Second part : splits with val, stratified, every 2 images kept together
     ds_trainval, ds_test = paired_stratified_split(ds_, test_size=test_size, stratify_by='image_type', random_state=random_state)
 
-    # Prepare data for the stratified k-fold split
+    # stratified k-fold split
     indices = np.arange(len(ds_trainval) // 2)
     image_types = np.array(ds_trainval['image_type'][::2]) # type of first half of each pair
-
-    # kfold
     skf = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=random_state)
     fold_indices = list(skf.split(indices, image_types))
 
@@ -482,16 +477,12 @@ def siamese_noise_dataset_fold_range(test_size=0.2, n_splits=5, noise_size=0, re
         # Convert pair indices to image indices
         train_idx = np.concatenate([2*train_pair_idx, 2*train_pair_idx+1])
         val_idx = np.concatenate([2*val_pair_idx, 2*val_pair_idx+1])
-
-        # Sort indices to maintain original order
         train_idx.sort()
         val_idx.sort()
 
-        # Create train and validation splits for this fold
         ds_train = ds_trainval.select(train_idx)
         ds_val = ds_trainval.select(val_idx)
 
-        # Add this fold to the list of folds
         ds_folds.append(DatasetDict({
             'train': ds_train,
             'valid': ds_val,
