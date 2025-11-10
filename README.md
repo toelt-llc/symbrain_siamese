@@ -1,34 +1,47 @@
-# MRI image analysis
+# symbrain_siamese
 
-This repository contains siamese model research applications on image analysis methods for 2D MRIs. 
+Compact notebooks and utilities for experimenting with Siamese neural networks and similarity learning. The repository is primarily Jupyter Notebook–driven for quick iteration, visualization, and experimentation.
 
-## Status 
-**Writing-phase**  
-:hourglass_flowing_sand:
+- Repo: [toelt-llc/symbrain_siamese](https://github.com/toelt-llc/symbrain_siamese)
+- Languages: Mostly Jupyter Notebooks (~95%), some Python (~5%)
 
-### TODO steps 
+## What’s inside
+- Jupyter notebooks for data exploration, model prototyping, and evaluation
+- Lightweight Python helpers (e.g., data loaders, preprocessing, training/eval routines)
+- Example workflows for building and testing Siamese-style models (e.g., verification, metric learning)
 
-- [x] List of preprocessing methods applied and available as examples
-- [x] Siamese network code
-- [x] Siamese backbones in the training loop
-- [x] Data processing and tf/torch compatible
-- [x] Evaluation dataset
-- [x] Documented steps of processing and methods
-- [x] Noise simulation code clean
-- [x] Evaluation of results and recap (wandb available)
-- [ ] Args check, GPU selection check
+## Quick start
+1. Clone the repo:
+   ```
+   git clone https://github.com/toelt-llc/symbrain_siamese.git
+   cd symbrain_siamese
+   ```
+2. Set up an environment (venv or conda) and install dependencies:
+   - If a `requirements.txt` or `environment.yml` is present:
+     ```
+     pip install -r requirements.txt
+     # or: conda env create -f environment.yml && conda activate <env-name>
+     ```
+   - Otherwise, install common notebook/ML packages you use (e.g., jupyter, numpy, pandas, matplotlib, and a deep learning framework like PyTorch or TensorFlow).
 
-## How to navigate the repository
-- [code](): in this folder you will find all the code used for the analysis and the figure(s) creation.
-    - [code/0_data_load]() notebook containing the data pre-processing commands and step-by-step illustrations.
-    - [code/1_data_save]() notebook containing the basic local data save code.
-    - [code/siamese_torch]() contains the latest pytorch siamese network version, with its complete training process.
+3. Launch notebooks:
+   ```
+   jupyter lab
+   # or: jupyter notebook
+   ```
+   Open the notebooks and adjust any config (paths, hyperparameters) at the top of each file.
 
-<!-- - [data](): in this folder you will find all the data that have been used or measured.   -->
-<!-- - [docs](): in this folder you will find information as: **papers, pdfs, any docs**   -->
-<!-- - [results](): in this folder you will find the datafiles of the results that will be used to prepare final plots for publications. **With links** -->
+## Data
+- Provide your dataset paths in the notebooks (or configuration cells).
+- For Siamese training, ensure you can generate pairs/triplets (positive/negative) or adapt the provided helper code to your data format.
 
-<!-- ## Illustration image -->
+## Results and logs
+- Notebooks will typically save artifacts (models, metrics, plots) to a local folder (e.g., `outputs/`); adjust paths as needed in the notebook cells.
 
+## Contributing
+- Keep notebooks concise and documented (short cell comments, clear section headers).
+- Prefer small, composable Python helpers over large monolithic scripts.
+- Open an issue or PR for substantial changes.
 
-todos
+## License
+No license is currently specified by the repository. If you plan to use or distribute this work, add an appropriate license file.
