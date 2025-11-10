@@ -1,9 +1,8 @@
 # symbrain_siamese
 
-Compact notebooks and utilities for experimenting with Siamese neural networks and similarity learning. The repository is primarily Jupyter Notebook–driven for quick iteration, visualization, and experimentation.
+Compact python notebooks and utilities for experimenting with Siamese neural networks and similarity learning. The repository is primarily Jupyter Notebook–driven for quick iteration, visualization, and experimentation.
 
 - Repo: [toelt-llc/symbrain_siamese](https://github.com/toelt-llc/symbrain_siamese)
-- Languages: Mostly Jupyter Notebooks (~95%), some Python (~5%)
 
 ## What’s inside
 - Jupyter notebooks for data exploration, model prototyping, and evaluation
